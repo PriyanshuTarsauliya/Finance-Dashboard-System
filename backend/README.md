@@ -89,6 +89,9 @@ Open: [http://localhost:8080/h2-console](http://localhost:8080/h2-console)
 |--------|----------------------|---------------------------|
 | POST   | `/api/auth/register` | Register new user         |
 | POST   | `/api/auth/login`    | Login, returns JWT        |
+| POST   | `/api/auth/google`   | Login with Google OAuth   |
+| POST   | `/api/auth/send-otp` | Send Mobile OTP           |
+| POST   | `/api/auth/verify-otp`| Verify OTP and login     |
 | POST   | `/api/auth/refresh`  | Refresh JWT access token  |
 
 **Sample Login Request:**
@@ -467,7 +470,6 @@ src/main/java/com/financeboard/
 - Add email verification and password reset flow
 - Implement audit logging for all mutations
 - Add export to CSV/PDF
-- Integrate real OAuth2 (Google, GitHub)
 - Add rate limiting (Bucket4j)
 - Dockerize with docker-compose
 - Add receipt file upload to cloud storage

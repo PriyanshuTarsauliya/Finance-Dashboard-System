@@ -21,6 +21,8 @@ Zorvyn Finance Suite is a modern financial dashboard that helps you:
 
 ### 👤 User and Role Management
 - User registration and authentication with JWT tokens
+- Support for **Mobile OTP** (via Twilio Verify API) and **Google OAuth** authentication
+- Advanced demographic collection (Date of Birth, Gender)
 - Three-tier role system: **ADMIN**, **ANALYST**, **VIEWER**
 - Admin panel for creating, updating, and deactivating users
 - Secure password hashing with BCrypt
@@ -90,6 +92,8 @@ Enforced at the method level using Spring Security `@PreAuthorize` annotations. 
 | Java 17 | Language |
 | Spring Security + JWT | Authentication & authorization |
 | Spring Data JPA + Hibernate | ORM & data access |
+| Twilio Verify SDK | Mobile OTP Authentication |
+| Google API Client | Google OAuth Authentication |
 | H2 / PostgreSQL | Database (dev / prod) |
 | MapStruct | Entity ↔ DTO mapping |
 | Lombok | Boilerplate reduction |
