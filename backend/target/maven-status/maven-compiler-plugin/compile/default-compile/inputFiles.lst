@@ -47,9 +47,11 @@ D:\Z\backend\src\main\java\com\financeboard\dto\UpdateRecordRequest.java
 D:\Z\backend\src\main\java\com\financeboard\exception\DuplicateEmailException.java
 D:\Z\backend\src\main\java\com\financeboard\controller\NotificationController.java
 D:\Z\backend\src\main\java\com\financeboard\exception\ResourceNotFoundException.java
+D:\Z\backend\src\main\java\com\financeboard\service\GoogleOAuthService.java
 D:\Z\backend\src\main\java\com\financeboard\security\JwtAuthenticationEntryPoint.java
 D:\Z\backend\src\main\java\com\financeboard\enums\Status.java
 D:\Z\backend\src\main\java\com\financeboard\controller\PreferenceController.java
+D:\Z\backend\src\main\java\com\financeboard\dto\GoogleLoginRequest.java
 D:\Z\backend\src\main\java\com\financeboard\dto\NotificationResponse.java
 D:\Z\backend\src\main\java\com\financeboard\exception\GlobalExceptionHandler.java
 D:\Z\backend\src\main\java\com\financeboard\dto\PageResponse.java

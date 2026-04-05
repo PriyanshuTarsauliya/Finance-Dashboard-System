@@ -2,10 +2,11 @@ import { useState, useCallback } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import CloudflareTurnstile from '../components/CloudflareTurnstile';
+import { GoogleLogin } from '@react-oauth/google';
 
 export default function Signup() {
   const navigate = useNavigate();
-  const { register, loading } = useAuth();
+  const { register, loginWithGoogle, loading } = useAuth();
   const [authMethod, setAuthMethod] = useState('email');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -55,7 +56,28 @@ export default function Signup() {
 
         {!showOtp && (
           <>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', margin: '0 0 1.5rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '0.5rem' }}>
+              <GoogleLogin
+                onSuccess={async (credentialResponse) => {
+                  try {
+                    setError('');
+                    await loginWithGoogle(credentialResponse.credential);
+                    navigate('/dashboard');
+                  } catch (err) {
+                    setError(err.message || 'Google Login failed');
+                  }
+                }}
+                onError={() => {
+                  setError('Google Login Failed');
+                }}
+                theme="filled_black"
+                shape="rectangular"
+                width="100%"
+                text="signup_with"
+              />
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', margin: '1.5rem 0' }}>
               <div style={{ flex: 1, height: '1px', background: 'var(--color-border)' }}></div>
               <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', textTransform: 'uppercase' }}>sign up with</span>
               <div style={{ flex: 1, height: '1px', background: 'var(--color-border)' }}></div>
@@ -83,18 +105,18 @@ export default function Signup() {
           ) : (
             <>
               <div>
-                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, marginBottom: '0.5rem', color: 'var(--color-text-muted)' }}>Full Name</label>
-                <input type="text" placeholder="John Doe" className="input-field" value={name} onChange={e => setName(e.target.value)} required />
+                <label htmlFor="name" style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, marginBottom: '0.5rem', color: 'var(--color-text-muted)' }}>Full Name</label>
+                <input id="name" name="name" autoComplete="name" type="text" placeholder="John Doe" className="input-field" value={name} onChange={e => setName(e.target.value)} required />
               </div>
               {authMethod === 'email' ? (
                 <>
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, marginBottom: '0.5rem', color: 'var(--color-text-muted)' }}>Email</label>
-                    <input type="email" placeholder="name@company.com" className="input-field" value={email} onChange={e => setEmail(e.target.value)} required />
+                    <label htmlFor="email" style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, marginBottom: '0.5rem', color: 'var(--color-text-muted)' }}>Email</label>
+                    <input id="email" name="email" autoComplete="email" type="email" placeholder="name@company.com" className="input-field" value={email} onChange={e => setEmail(e.target.value)} required />
                   </div>
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, marginBottom: '0.5rem', color: 'var(--color-text-muted)' }}>Password</label>
-                    <input type="password" placeholder="Min 8 characters" className="input-field" value={password} onChange={e => setPassword(e.target.value)} required />
+                    <label htmlFor="password" style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, marginBottom: '0.5rem', color: 'var(--color-text-muted)' }}>Password</label>
+                    <input id="password" name="password" autoComplete="new-password" type="password" placeholder="Min 8 characters" className="input-field" value={password} onChange={e => setPassword(e.target.value)} required />
                   </div>
                 </>
               ) : (

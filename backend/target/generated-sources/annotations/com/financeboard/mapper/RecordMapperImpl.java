@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-04-05T14:51:54+0530",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 23.0.1 (Oracle Corporation)"
+    date = "2026-04-05T15:54:24+0530",
+    comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.45.0.v20260224-0835, environment: Java 21.0.10 (Eclipse Adoptium)"
 )
 @Component
 public class RecordMapperImpl implements RecordMapper {
@@ -25,13 +25,13 @@ public class RecordMapperImpl implements RecordMapper {
 
         recordResponse.createdById( recordCreatedById( record ) );
         recordResponse.createdByName( recordCreatedByName( record ) );
-        recordResponse.id( record.getId() );
         recordResponse.amount( record.getAmount() );
-        recordResponse.type( record.getType() );
         recordResponse.category( record.getCategory() );
-        recordResponse.date( record.getDate() );
-        recordResponse.notes( record.getNotes() );
         recordResponse.createdAt( record.getCreatedAt() );
+        recordResponse.date( record.getDate() );
+        recordResponse.id( record.getId() );
+        recordResponse.notes( record.getNotes() );
+        recordResponse.type( record.getType() );
         recordResponse.updatedAt( record.getUpdatedAt() );
 
         return recordResponse.build();

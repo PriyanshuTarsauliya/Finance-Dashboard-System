@@ -26,6 +26,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final UserMapper userMapper;
+    private final GoogleOAuthService googleOAuthService;
 
     @Transactional
     public AuthResponse register(RegisterRequest request) {
@@ -73,6 +74,31 @@ public class AuthService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         log.info("Token refreshed for user: {}", user.getId());
+        return buildAuthResponse(user);
+    }
+
+    @Transactional
+    public AuthResponse loginWithGoogle(GoogleLoginRequest request) {
+        log.info("Attempting Google login");
+
+        com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload payload = googleOAuthService.verifyToken(request.getToken())
+                .orElseThrow(() -> new RuntimeException("Invalid Google token. Ensure Google Client ID is configured."));
+
+        String email = payload.getEmail();
+        String name = (String) payload.get("name");
+
+        User user = userRepository.findByEmail(email).orElseGet(() -> {
+            log.info("Creating new user from Google login: {}", email);
+            User newUser = User.builder()
+                    .name(name != null ? name : "Google User")
+                    .email(email)
+                    .password(passwordEncoder.encode(java.util.UUID.randomUUID().toString())) // Random password
+                    .role(Role.VIEWER)
+                    .build();
+            return userRepository.save(newUser);
+        });
+
+        log.info("Google login successful for user: {}", user.getId());
         return buildAuthResponse(user);
     }
 

@@ -37,7 +37,10 @@ class ApiClient {
 
     if (response.status === 401) {
       this.clearTokens();
-      window.location.href = '/login';
+      const isAuthPage = ['/login', '/signup'].includes(window.location.pathname);
+      if (!isAuthPage) {
+        window.location.href = '/login';
+      }
       throw new Error('Unauthorized');
     }
 

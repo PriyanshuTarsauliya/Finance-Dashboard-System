@@ -2,10 +2,11 @@ import { useState, useCallback } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import CloudflareTurnstile from '../components/CloudflareTurnstile';
+import { GoogleLogin } from '@react-oauth/google';
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login, loading } = useAuth();
+  const { login, loginWithGoogle, loading } = useAuth();
   const [authMethod, setAuthMethod] = useState('email');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -70,10 +71,27 @@ export default function Login() {
 
         {!showOtp && (
           <>
-            <button onClick={() => quickLogin('admin@finance.com', 'Admin@123')} className="btn" style={{ width: '100%', padding: '0.75rem', background: 'var(--color-bg-input)', border: '1px solid var(--color-border)', color: 'var(--color-text-main)', marginBottom: '0.5rem', justifyContent: 'center' }}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25C22.56 11.47 22.49 10.72 22.36 10H12V14.26H17.92C17.66 15.63 16.89 16.78 15.74 17.55V20.34H19.3C21.38 18.42 22.56 15.6 22.56 12.25Z" fill="#4285F4"/><path d="M12 23C14.97 23 17.46 22.02 19.3 20.34L15.74 17.55C14.74 18.22 13.48 18.63 12 18.63C9.14 18.63 6.71 16.71 5.84 14.13H2.16V16.98C3.97 20.58 7.7 23 12 23Z" fill="#34A853"/><path d="M5.84 14.13C5.62 13.47 5.49 12.75 5.49 12C5.49 11.25 5.62 10.53 5.84 9.87V7.02H2.16C1.41 8.52 1 10.21 1 12C1 13.79 1.41 15.48 2.16 16.98L5.84 14.13Z" fill="#FBBC05"/><path d="M12 5.38C13.62 5.38 15.07 5.94 16.22 7.03L19.38 3.87C17.45 2.07 14.96 1 12 1C7.7 1 3.97 3.42 2.16 7.02L5.84 9.87C6.71 7.29 9.14 5.38 12 5.38Z" fill="#EA4335"/></svg>
-              Continue with Google
-            </button>
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '0.5rem' }}>
+              <GoogleLogin
+                onSuccess={async (credentialResponse) => {
+                  try {
+                    setError('');
+                    await loginWithGoogle(credentialResponse.credential);
+                    navigate('/dashboard');
+                  } catch (err) {
+                    setError(err.message || 'Google Login failed');
+                  }
+                }}
+                onError={() => {
+                  setError('Google Login Failed');
+                }}
+                useOneTap
+                theme="filled_black"
+                shape="rectangular"
+                width="100%"
+                text="continue_with"
+              />
+            </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', margin: '1.5rem 0' }}>
               <div style={{ flex: 1, height: '1px', background: 'var(--color-border)' }}></div>
@@ -106,12 +124,12 @@ export default function Login() {
               {authMethod === 'email' ? (
                 <>
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, marginBottom: '0.5rem', color: 'var(--color-text-muted)' }}>Email Address</label>
-                    <input type="email" placeholder="admin@finance.com" className="input-field" value={email} onChange={e => setEmail(e.target.value)} required />
+                    <label htmlFor="email" style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, marginBottom: '0.5rem', color: 'var(--color-text-muted)' }}>Email Address</label>
+                    <input id="email" name="email" autoComplete="username" type="email" placeholder="admin@finance.com" className="input-field" value={email} onChange={e => setEmail(e.target.value)} required />
                   </div>
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, marginBottom: '0.5rem', color: 'var(--color-text-muted)' }}>Password</label>
-                    <input type="password" placeholder="Admin@123" className="input-field" value={password} onChange={e => setPassword(e.target.value)} required />
+                    <label htmlFor="password" style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, marginBottom: '0.5rem', color: 'var(--color-text-muted)' }}>Password</label>
+                    <input id="password" name="password" autoComplete="current-password" type="password" placeholder="Admin@123" className="input-field" value={password} onChange={e => setPassword(e.target.value)} required />
                   </div>
                 </>
               ) : (

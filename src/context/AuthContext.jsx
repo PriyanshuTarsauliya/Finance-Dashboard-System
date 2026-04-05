@@ -23,6 +23,19 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const loginWithGoogle = async (googleToken) => {
+    setLoading(true);
+    try {
+      const data = await api.post('/auth/google', { token: googleToken });
+      api.setTokens(data.accessToken, data.refreshToken);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      setUser(data.user);
+      return data;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const register = async (name, email, password, role = 'VIEWER', turnstileToken) => {
     setLoading(true);
     try {
@@ -44,7 +57,7 @@ export function AuthProvider({ children }) {
   const isAuthenticated = !!user && !!api.getToken();
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, loading, isAuthenticated }}>
+    <AuthContext.Provider value={{ user, login, loginWithGoogle, register, logout, loading, isAuthenticated }}>
       {children}
     </AuthContext.Provider>
   );
