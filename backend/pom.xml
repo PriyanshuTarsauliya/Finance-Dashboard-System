@@ -76,6 +76,13 @@
             <version>2.4.0</version>
         </dependency>
 
+        <!-- Twilio for SMS OTP -->
+        <dependency>
+            <groupId>com.twilio.sdk</groupId>
+            <artifactId>twilio</artifactId>
+            <version>9.14.0</version>
+        </dependency>
+
         <!-- Database -->
         <dependency>
             <groupId>org.postgresql</groupId>

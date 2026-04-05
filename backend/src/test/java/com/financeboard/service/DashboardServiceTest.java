@@ -6,7 +6,6 @@ import com.financeboard.dto.TrendData;
 import com.financeboard.dto.RecordResponse;
 import com.financeboard.entity.FinancialRecord;
 import com.financeboard.entity.User;
-import com.financeboard.enums.Role;
 import com.financeboard.enums.TransactionType;
 import com.financeboard.mapper.RecordMapper;
 import com.financeboard.repository.FinancialRecordRepository;

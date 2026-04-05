@@ -41,6 +41,8 @@ public class AuthService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(request.getRole() != null ? request.getRole() : Role.VIEWER)
+                .dateOfBirth(request.getDateOfBirth())
+                .gender(request.getGender())
                 .build();
 
         user = userRepository.save(user);
@@ -99,6 +101,36 @@ public class AuthService {
         });
 
         log.info("Google login successful for user: {}", user.getId());
+        return buildAuthResponse(user);
+    }
+
+    @Transactional
+    public AuthResponse loginOrRegisterByPhone(String phone, VerifyOtpRequest request) {
+        log.info("OTP login/register for phone: {}", phone);
+
+        User user = userRepository.findByPhone(phone).orElseGet(() -> {
+            log.info("Creating new user from phone login: {}", phone);
+            String name = request.getName();
+            String displayName = (name != null && !name.isBlank()) ? name : "User " + phone.substring(phone.length() - 4);
+            User newUser = User.builder()
+                    .name(displayName)
+                    .email(phone + "@phone.local") // Placeholder email for phone-only users
+                    .phone(phone)
+                    .password(passwordEncoder.encode(java.util.UUID.randomUUID().toString()))
+                    .role(Role.VIEWER)
+                    .dateOfBirth(request.getDateOfBirth())
+                    .gender(request.getGender())
+                    .build();
+            return userRepository.save(newUser);
+        });
+
+        // Update phone if user exists but has no phone stored
+        if (user.getPhone() == null || user.getPhone().isBlank()) {
+            user.setPhone(phone);
+            userRepository.save(user);
+        }
+
+        log.info("OTP login successful for user: {}", user.getId());
         return buildAuthResponse(user);
     }
 

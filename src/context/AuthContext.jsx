@@ -36,10 +36,33 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const register = async (name, email, password, role = 'VIEWER', turnstileToken) => {
+  const register = async (name, email, password, dateOfBirth, gender, role = 'VIEWER', turnstileToken) => {
     setLoading(true);
     try {
-      const data = await api.post('/auth/register', { name, email, password, role, turnstileToken });
+      const data = await api.post('/auth/register', { name, email, password, dateOfBirth, gender, role, turnstileToken });
+      api.setTokens(data.accessToken, data.refreshToken);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      setUser(data.user);
+      return data;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const sendOtp = async (phone, countryCode, turnstileToken) => {
+    setLoading(true);
+    try {
+      const data = await api.post('/auth/send-otp', { phone, countryCode, turnstileToken });
+      return data;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const verifyOtp = async (phone, countryCode, otp, name, dateOfBirth, gender) => {
+    setLoading(true);
+    try {
+      const data = await api.post('/auth/verify-otp', { phone, countryCode, otp, name, dateOfBirth, gender });
       api.setTokens(data.accessToken, data.refreshToken);
       localStorage.setItem('user', JSON.stringify(data.user));
       setUser(data.user);
@@ -57,7 +80,7 @@ export function AuthProvider({ children }) {
   const isAuthenticated = !!user && !!api.getToken();
 
   return (
-    <AuthContext.Provider value={{ user, login, loginWithGoogle, register, logout, loading, isAuthenticated }}>
+    <AuthContext.Provider value={{ user, login, loginWithGoogle, register, sendOtp, verifyOtp, logout, loading, isAuthenticated }}>
       {children}
     </AuthContext.Provider>
   );

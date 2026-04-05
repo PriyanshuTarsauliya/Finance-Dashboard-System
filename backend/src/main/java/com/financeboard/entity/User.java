@@ -2,12 +2,14 @@ package com.financeboard.entity;
 
 import com.financeboard.enums.Role;
 import com.financeboard.enums.Status;
+import com.financeboard.enums.Gender;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -33,12 +35,21 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(unique = true)
+    private String phone;
+
     @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
+
+    @Column(name = "date_of_birth")
+    private LocalDate dateOfBirth;
+
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

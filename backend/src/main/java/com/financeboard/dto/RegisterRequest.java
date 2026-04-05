@@ -1,6 +1,9 @@
 package com.financeboard.dto;
 
+import java.time.LocalDate;
+
 import com.financeboard.enums.Role;
+import com.financeboard.enums.Gender;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
@@ -16,8 +19,12 @@ public class RegisterRequest {
     private String email;
 
     @NotBlank(message = "Password is required")
-    @Size(min = 8, message = "Password must be at least 8 characters")
+    @Size(min = 6, message = "Password must be at least 6 characters")
     private String password;
+
+    private LocalDate dateOfBirth;
+
+    private Gender gender;
 
     private Role role = Role.VIEWER;
 
