@@ -1,16 +1,17 @@
-# React + Vite
+# Finance Dashboard System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, high-performance financial dashboard application. 
 
-Currently, two official plugins are available:
+**🚀 Live Demo:** [https://finance-dashboard-system.netlify.app/](https://finance-dashboard-system.netlify.app/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
+- Complete financial record management
+- Google OAuth and Email/Mobile authentication
+- Role-based access control (Admin, Analyst, Viewer)
+- Dashboard analytics and data visualization
+- Cloudflare Turnstile bot protection
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Tech Stack
+- **Frontend:** React, Vite, React Router, Recharts
+- **Backend:** Java Spring Boot, Spring Security, JWT
+- **Database:** PostgreSQL (with AES-256-GCM record encryption)
