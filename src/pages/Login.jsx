@@ -17,6 +17,7 @@ export default function Login() {
   const [error, setError] = useState('');
   const [otpNotice, setOtpNotice] = useState('');
   const [turnstileToken, setTurnstileToken] = useState('');
+  const [showDemoLogins, setShowDemoLogins] = useState(false);
   const otpRefs = useRef([]);
 
   const handleTurnstileVerify = useCallback((token) => {
@@ -262,20 +263,32 @@ export default function Login() {
             <p style={{ textAlign: 'center', marginTop: '1.5rem', fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>
               Don't have an account? <Link to="/signup" style={{ color: 'var(--color-primary)', fontWeight: 500 }}>Sign up</Link>
             </p>
-            <div style={{ marginTop: '1.5rem', padding: '1rem', background: 'var(--color-bg-input)', borderRadius: '8px', border: '1px solid var(--color-border)' }}>
-              <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: '0.75rem', textTransform: 'uppercase', fontWeight: 600 }}>Quick Login (Demo)</div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <button onClick={() => quickLogin('admin@finance.com', 'Admin@123')} className="btn btn-outline" style={{ width: '100%', justifyContent: 'space-between', fontSize: '0.8rem' }}>
-                  <span>admin@finance.com</span><span className="badge badge-admin">Admin</span>
+            {!showDemoLogins ? (
+              <p style={{ textAlign: 'center', marginTop: '1rem' }}>
+                <button type="button" onClick={() => {
+                  const pin = window.prompt("Enter Developer PIN (0000) to reveal quick logins:");
+                  if (pin === "0000") setShowDemoLogins(true);
+                  else if (pin) alert("Incorrect PIN!");
+                }} style={{ background: 'transparent', border: 'none', color: 'var(--color-text-muted)', fontSize: '0.75rem', cursor: 'pointer', textDecoration: 'underline' }}>
+                  Developer Access
                 </button>
-                <button onClick={() => quickLogin('analyst@finance.com', 'Analyst@123')} className="btn btn-outline" style={{ width: '100%', justifyContent: 'space-between', fontSize: '0.8rem' }}>
-                  <span>analyst@finance.com</span><span className="badge badge-analyst">Analyst</span>
-                </button>
-                <button onClick={() => quickLogin('viewer@finance.com', 'Viewer@123')} className="btn btn-outline" style={{ width: '100%', justifyContent: 'space-between', fontSize: '0.8rem' }}>
-                  <span>viewer@finance.com</span><span className="badge badge-viewer">Viewer</span>
-                </button>
+              </p>
+            ) : (
+              <div style={{ marginTop: '1.5rem', padding: '1rem', background: 'var(--color-bg-input)', borderRadius: '8px', border: '1px solid var(--color-border)' }}>
+                <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: '0.75rem', textTransform: 'uppercase', fontWeight: 600 }}>Quick Login (Demo)</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  <button onClick={() => quickLogin('admin@finance.com', 'Admin@123')} className="btn btn-outline" style={{ width: '100%', justifyContent: 'space-between', fontSize: '0.8rem' }}>
+                    <span>admin@finance.com</span><span className="badge badge-admin">Admin</span>
+                  </button>
+                  <button onClick={() => quickLogin('analyst@finance.com', 'Analyst@123')} className="btn btn-outline" style={{ width: '100%', justifyContent: 'space-between', fontSize: '0.8rem' }}>
+                    <span>analyst@finance.com</span><span className="badge badge-analyst">Analyst</span>
+                  </button>
+                  <button onClick={() => quickLogin('viewer@finance.com', 'Viewer@123')} className="btn btn-outline" style={{ width: '100%', justifyContent: 'space-between', fontSize: '0.8rem' }}>
+                    <span>viewer@finance.com</span><span className="badge badge-viewer">Viewer</span>
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
           </>
         )}
       </div>
